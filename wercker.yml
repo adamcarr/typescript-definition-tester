@@ -1,0 +1,22 @@
+box: wercker/nodejs
+# Build definition
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    # A step that executes `npm install` command
+    - npm-install
+    # A step that executes `npm test` command
+    - script:
+        name: dev-setup
+        code: |
+          sudo npm install -g typescript@1.5.0-alpha mocha
+    - npm-test
+
+    # A custom script step, name value is used in the UI
+    # and the code value contains the command that get executed
+    - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
