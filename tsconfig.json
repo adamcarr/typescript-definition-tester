@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "sourceMap": true,
+        "target": "es5"
+    },
+    "files": [
+        "src/index.ts",
+        "test/examples/compile.ts",
+        "test/examples/compileDirectory.ts",
+        "test/examples/walk.ts",
+        "test/index.ts",
+        "typings/tsd.d.ts"
+    ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "typescript-definition-tester",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --module CommonJS --declaration --target ES5 ./src/index.ts --outDir dist/ && tsc --module CommonJS ./test/index.ts --outDir testOut/",
+    "postbuild": "node bundler.js",
+    "pretest": "npm run build",
+    "test": "mocha testOut/test/index.js"
+  },
+  "author": "adam.carr@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "bluebird": "^2.9.24",
+    "chai": "^2.2.0",
+    "typescript": "^1.5.0-alpha"
+  },
+  "typescript": {
+    "definition": "./dist/typescript-definition-tester.d.ts"
+  },
+  "dependencies": {
+    "dts-bundle": "^0.2.0",
+    "lodash": "^3.6.0"
+  }
+}
