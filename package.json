@@ -9,7 +9,18 @@
     "pretest": "npm run build",
     "test": "mocha testOut/test/index.js"
   },
-  "author": "adam.carr@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamcarr/typescript-definition-tester.git"
+  },
+  "keywords": [
+    "typescript"
+  ],
+  "author": {
+    "name": "Adam Carr",
+    "email": "adam.carr@gmail.com",
+    "url": "http://blog.adamcarr.net"
+  },
   "license": "MIT",
   "devDependencies": {
     "bluebird": "^2.9.24",
