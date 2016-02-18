@@ -8,9 +8,6 @@
     "typescript/typescript.d.ts": {
       "commit": "8f16b0fd1acd81a555b74f912da849dccc7c9a42"
     },
-    "chai/chai.d.ts": {
-      "commit": "8f16b0fd1acd81a555b74f912da849dccc7c9a42"
-    },
     "mocha/mocha.d.ts": {
       "commit": "8f16b0fd1acd81a555b74f912da849dccc7c9a42"
     },
@@ -22,6 +19,9 @@
     },
     "lodash/lodash.d.ts": {
       "commit": "8f16b0fd1acd81a555b74f912da849dccc7c9a42"
+    },
+    "assertion-error/assertion-error.d.ts": {
+      "commit": "99c4fb76b5d941939ba53e61d0daee4bd74f150f"
     }
   }
 }

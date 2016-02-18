@@ -23,15 +23,15 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bluebird": "^2.9.24",
-    "chai": "^2.2.0",
-    "typescript": "^1.5.0-alpha"
+    "bluebird": "^2.9.24"
   },
   "typescript": {
     "definition": "./dist/typescript-definition-tester.d.ts"
   },
   "dependencies": {
+    "assertion-error": "^1.0.1",
     "dts-bundle": "^0.2.0",
-    "lodash": "^3.6.0"
+    "lodash": "^3.6.0",
+    "typescript": "^1.7.0"
   }
 }
