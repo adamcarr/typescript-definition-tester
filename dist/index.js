@@ -1,8 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" />
 var ts = require("typescript");
-var chai_1 = require("chai");
 var fs = require("fs");
 var _ = require("lodash");
+var AssertionError = require("assertion-error");
 var defaultCompilerOptions = {
     noEmitOnError: true,
     noImplicitAny: true,
@@ -13,7 +13,9 @@ function handleDiagnostics(type, diagnostics) {
     diagnostics.forEach(function (diagnostic) {
         var _a = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start), line = _a.line, character = _a.character;
         var message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
-        chai_1.assert.fail(diagnostic, undefined, type + ": " + diagnostic.file.fileName + " (" + (line + 1) + "," + (character + 1) + "): " + message);
+        throw new AssertionError(type + ": " + diagnostic.file.fileName + " (" + (line + 1) + "," + (character + 1) + "): " + message, {
+            actual: diagnostic
+        });
     });
 }
 function compile(fileNames, options, done) {
@@ -42,7 +44,9 @@ function compileDirectory(path, filter, options, done) {
     options = _.merge(defaultCompilerOptions, (options || {}));
     walk(path, filter, function (err, results) {
         if (err) {
-            chai_1.assert.fail(err, undefined, 'Error while walking directory for files.');
+            throw new AssertionError('Error while walking directory for files.', {
+                actual: err
+            });
             done();
         }
         else {

@@ -1,10 +1,9 @@
 /// <reference path="../typings/tsd.d.ts" />
 
 import * as ts from "typescript";
-import * as chai from "chai";
-import {assert} from "chai";
 import * as fs from "fs";
 import * as _ from "lodash";
+import AssertionError = require("assertion-error");
 
 var defaultCompilerOptions = {
     noEmitOnError: true,
@@ -17,8 +16,9 @@ function handleDiagnostics(type: string, diagnostics: ts.Diagnostic[]) {
     diagnostics.forEach(diagnostic => {
         var { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
         var message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
-
-        assert.fail(diagnostic, undefined, `${type}: ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+        throw new AssertionError(`${type}: ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`, {
+            actual: diagnostic
+        });
     });
 }
 
@@ -55,7 +55,9 @@ export function compileDirectory(path: string, filter?: any, options?: any, done
 
     walk(path, filter, (err, results) => {
         if (err) {
-            assert.fail(err, undefined, 'Error while walking directory for files.');
+            throw new AssertionError('Error while walking directory for files.', {
+                actual: err
+            });
             done();
         } else {
             compile(results, options, done);
