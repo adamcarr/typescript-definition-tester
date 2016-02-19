@@ -23,8 +23,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bluebird": "^2.9.24",
-    "typescript": "^1.5.0-alpha"
+    "bluebird": "^2.9.24"
   },
   "typescript": {
     "definition": "./dist/typescript-definition-tester.d.ts"
