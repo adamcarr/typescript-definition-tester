@@ -23,7 +23,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bluebird": "^2.9.24"
+    "bluebird": "^2.9.24",
+    "typescript": "^1.5.0-alpha"
   },
   "typescript": {
     "definition": "./dist/typescript-definition-tester.d.ts"
@@ -31,7 +32,9 @@
   "dependencies": {
     "assertion-error": "^1.0.1",
     "dts-bundle": "^0.2.0",
-    "lodash": "^3.6.0",
-    "typescript": "^1.7.0"
+    "lodash": "^3.6.0"
+  },
+  "peerDependencies": {
+    "typescript": "1.x"
   }
 }
