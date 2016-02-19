@@ -10,7 +10,7 @@ build:
     - script:
         name: dev-setup
         code: |
-          sudo npm install -g typescript@1.5.0-alpha mocha
+          sudo npm install -g mocha && sudo npm install typescript
     - npm-test
 
     # A custom script step, name value is used in the UI
