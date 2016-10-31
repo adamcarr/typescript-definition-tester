@@ -4,6 +4,7 @@
         "sourceMap": true,
         "target": "es5"
     },
+    "compileOnSave": false,
     "files": [
         "src/index.ts",
         "test/examples/compile.ts",

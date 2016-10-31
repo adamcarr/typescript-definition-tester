@@ -8,8 +8,11 @@ describe('ambient declaration tests', () => {
     it('should compile examples successfully against typescript-definition-tester.d.ts', (done) => {
         tt.compileDirectory(
             './test/examples',
-            (fileName: string) => fileName.indexOf('.ts') > -1,
+            (fileName: string) => {
+                console.log('fileName', fileName);
+                return fileName.indexOf('.ts') > -1
+            },
             () => done()
-            );
+        );
     });
 });
