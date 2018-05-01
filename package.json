@@ -1,10 +1,10 @@
 {
   "name": "typescript-definition-tester",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --module CommonJS --declaration --target ES5 ./src/index.ts --outDir dist/ && tsc --module CommonJS ./test/index.ts --outDir testOut/",
+    "build": "tsc --module CommonJS --declaration --target ES6 ./src/index.ts --outDir dist/ && tsc --module CommonJS ./test/index.ts --outDir testOut/",
     "postbuild": "node bundler.js",
     "pretest": "npm run build",
     "test": "mocha testOut/test/index.js"
@@ -23,7 +23,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bluebird": "^2.9.24"
+    "@types/assertion-error": "^1.1.0",
+    "@types/lodash": "^4.14.108",
+    "@types/mocha": "^5.2.0",
+    "@types/node": "8",
+    "bluebird": "^2.9.24",
+    "mocha": "^5.1.1"
   },
   "typescript": {
     "definition": "./dist/typescript-definition-tester.d.ts"

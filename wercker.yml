@@ -1,4 +1,4 @@
-box: wercker/nodejs
+box: node
 # Build definition
 # Build definition
 build:
