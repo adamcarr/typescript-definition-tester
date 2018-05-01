@@ -30,11 +30,8 @@ export function compile(fileNames: string[], options: ts.CompilerOptions, done: 
         // TODO: this is generating errors so disabling for now. Will continue to investigate.
         // handleDiagnostics('Declaration', program.getDeclarationDiagnostics());
         handleDiagnostics('Global', program.getGlobalDiagnostics());
-        console.log('Global finished');
         handleDiagnostics('Semantic', program.getSemanticDiagnostics());
-        console.log('Semantic finished');
         handleDiagnostics('Syntactic', program.getSyntacticDiagnostics());
-        console.log('Syntactic finished');
         done();
     }
     catch (e) {
