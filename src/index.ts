@@ -1,5 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import * as ts from "typescript";
 import * as fs from "fs";
 import * as _ from "lodash";
@@ -12,7 +10,7 @@ var defaultCompilerOptions: ts.CompilerOptions = {
     module: ts.ModuleKind.CommonJS
 };
 
-function handleDiagnostics(type: string, diagnostics: ts.Diagnostic[]) {
+function handleDiagnostics(type: string, diagnostics: ReadonlyArray<ts.Diagnostic>) {
     diagnostics.forEach(diagnostic => {
         var { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
         var message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
@@ -22,22 +20,32 @@ function handleDiagnostics(type: string, diagnostics: ts.Diagnostic[]) {
     });
 }
 
-export function compile(fileNames: string[], options: ts.CompilerOptions, done: Function): void {
-    var program = ts.createProgram(fileNames, options);
-    
-    // TODO: this is generating errors so disabling for now. Will continue to investigate.
-    // handleDiagnostics('Declaration', program.getDeclarationDiagnostics());
-    handleDiagnostics('Global', program.getGlobalDiagnostics());
-    handleDiagnostics('Semantic', program.getSemanticDiagnostics());
-    handleDiagnostics('Syntactic', program.getSyntacticDiagnostics());
+export type DoneFunction = (err: any, results?: string[]) => void;
+export type FilterFunction = (fileName: string) => boolean;
 
-    done();
+export function compile(fileNames: string[], options: ts.CompilerOptions, done: Function): void {
+    try {
+        const program = ts.createProgram(fileNames, options);
+        
+        // TODO: this is generating errors so disabling for now. Will continue to investigate.
+        // handleDiagnostics('Declaration', program.getDeclarationDiagnostics());
+        handleDiagnostics('Global', program.getGlobalDiagnostics());
+        console.log('Global finished');
+        handleDiagnostics('Semantic', program.getSemanticDiagnostics());
+        console.log('Semantic finished');
+        handleDiagnostics('Syntactic', program.getSyntacticDiagnostics());
+        console.log('Syntactic finished');
+        done();
+    }
+    catch (e) {
+        done(e);
+    }
 }
 
 export function compileDirectory(path: string, done: Function): void;
 export function compileDirectory(path: string, options: ts.CompilerOptions, done: Function): void;
-export function compileDirectory(path: string, filter: (fileName: string) => boolean, done: Function): void;
-export function compileDirectory(path: string, filter: (fileName: string) => boolean, options: ts.CompilerOptions, done: Function): void;
+export function compileDirectory(path: string, filter: FilterFunction, done: Function): void;
+export function compileDirectory(path: string, filter: FilterFunction, options: ts.CompilerOptions, done: Function): void;
 export function compileDirectory(path: string, filter?: any, options?: any, done?: Function): void {
     if (!done) {
         if (!options) {
@@ -66,9 +74,9 @@ export function compileDirectory(path: string, filter?: any, options?: any, done
     });
 }
 
-export function walk(dir: string, done: (err: any, results?: string[]) => void): void;
-export function walk(dir: string, filter: (fileName: string) => boolean, done: (err: any, results?: string[]) => void): void;
-export function walk(dir: string, filter?: (fileName: string) => boolean, done?: (err: any, results?: string[]) => void): void {
+export function walk(dir: string, done: DoneFunction): void;
+export function walk(dir: string, filter: FilterFunction, done: DoneFunction): void;
+export function walk(dir: string, filter: FilterFunction | DoneFunction, done?: DoneFunction): void {
     if (!done) {
         done = filter;
         filter = undefined;
@@ -91,7 +99,7 @@ export function walk(dir: string, filter?: (fileName: string) => boolean, done?:
                         next();
                     });
                 } else {
-                    if (!filter || filter(file)) {
+                    if (!filter || (filter as FilterFunction)(file)) {
                         results.push(file);
                     }
                     next();

@@ -1,32 +1,40 @@
-/// <reference path="../typings/tsd.d.ts" />
 "use strict";
-var ts = require("typescript");
-var fs = require("fs");
-var _ = require("lodash");
-var AssertionError = require("assertion-error");
+Object.defineProperty(exports, "__esModule", { value: true });
+const ts = require("typescript");
+const fs = require("fs");
+const _ = require("lodash");
+const AssertionError = require("assertion-error");
 var defaultCompilerOptions = {
     noEmitOnError: true,
     noImplicitAny: true,
-    target: 1 /* ES5 */,
-    module: 1 /* CommonJS */
+    target: ts.ScriptTarget.ES5,
+    module: ts.ModuleKind.CommonJS
 };
 function handleDiagnostics(type, diagnostics) {
-    diagnostics.forEach(function (diagnostic) {
-        var _a = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start), line = _a.line, character = _a.character;
+    diagnostics.forEach(diagnostic => {
+        var { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
         var message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
-        throw new AssertionError(type + ": " + diagnostic.file.fileName + " (" + (line + 1) + "," + (character + 1) + "): " + message, {
+        throw new AssertionError(`${type}: ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`, {
             actual: diagnostic
         });
     });
 }
 function compile(fileNames, options, done) {
-    var program = ts.createProgram(fileNames, options);
-    // TODO: this is generating errors so disabling for now. Will continue to investigate.
-    // handleDiagnostics('Declaration', program.getDeclarationDiagnostics());
-    handleDiagnostics('Global', program.getGlobalDiagnostics());
-    handleDiagnostics('Semantic', program.getSemanticDiagnostics());
-    handleDiagnostics('Syntactic', program.getSyntacticDiagnostics());
-    done();
+    try {
+        const program = ts.createProgram(fileNames, options);
+        // TODO: this is generating errors so disabling for now. Will continue to investigate.
+        // handleDiagnostics('Declaration', program.getDeclarationDiagnostics());
+        handleDiagnostics('Global', program.getGlobalDiagnostics());
+        console.log('Global finished');
+        handleDiagnostics('Semantic', program.getSemanticDiagnostics());
+        console.log('Semantic finished');
+        handleDiagnostics('Syntactic', program.getSyntacticDiagnostics());
+        console.log('Syntactic finished');
+        done();
+    }
+    catch (e) {
+        done(e);
+    }
 }
 exports.compile = compile;
 function compileDirectory(path, filter, options, done) {
@@ -44,7 +52,7 @@ function compileDirectory(path, filter, options, done) {
         }
     }
     options = _.merge(defaultCompilerOptions, (options || {}));
-    walk(path, filter, function (err, results) {
+    walk(path, filter, (err, results) => {
         if (err) {
             console.log('error error error');
             throw new AssertionError('Error while walking directory for files.', {
