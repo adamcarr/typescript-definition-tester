@@ -36,7 +36,7 @@
   "dependencies": {
     "assertion-error": "^1.0.1",
     "dts-bundle": "^0.2.0",
-    "lodash": "^3.6.0"
+    "lodash": "^4.17.15"
   },
   "peerDependencies": {
     "typescript": "1.x || 2.x"
